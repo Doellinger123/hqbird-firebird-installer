@@ -1,0 +1,60 @@
+HQBird Firebird Installer - Banco Athenas
+==========================================
+
+Este projeto contém um script automatizado para instalação do HQBird Firebird 5 no Ubuntu Server,
+incluindo o banco de dados Athenas.fdb e as UDFs necessárias.
+
+------------------------------------------
+ESTRUTURA DO REPOSITÓRIO
+------------------------------------------
+hqbird-firebird-installer/
+ ├── install.sh          -> Script de instalação (executável no Linux)
+ ├── athenas.fdb         -> Banco de dados Firebird (coloque aqui seu arquivo .fdb)
+ └── UDF/                -> Pasta contendo os arquivos .so das UDFs
+
+------------------------------------------
+COMO EXECUTAR NO LINUX
+------------------------------------------
+1. Clone o repositório:
+   git clone https://github.com/Doellinger123/hqbird-firebird-installer.git
+   cd hqbird-firebird-installer
+
+2. Dê permissão de execução no script:
+   chmod +x install.sh
+
+3. Execute o script como root:
+   sudo ./install.sh
+
+------------------------------------------
+O QUE O SCRIPT FAZ
+------------------------------------------
+- Instala dependências: curl, wget, nano, ufw, unzip, Java 8, net-tools, lsof.
+- Remove versões antigas do Firebird.
+- Baixa e instala o HQBird Firebird 5.
+- Cria a pasta /opt/fb50/database/ e copia o banco Athenas.fdb.
+- Cria a pasta /opt/fb50/UDF/ e copia os arquivos de UDF.
+- Configura o firebird.conf:
+    DataTypeCompatibility = 3.0
+    UDFAccess = Restrict UDF
+    RemoteBindAddress = 0.0.0.0
+- Libera a porta 3050 no firewall (ou desativa o UFW, conforme configurado).
+- Ativa e inicia o serviço Firebird no boot.
+
+------------------------------------------
+LOCALIZAÇÃO FINAL NO SERVIDOR
+------------------------------------------
+Banco de dados: /opt/fb50/database/athenas.fdb
+UDFs: /opt/fb50/UDF/
+
+------------------------------------------
+NOTAS DE SEGURANÇA
+------------------------------------------
+As permissões padrão são 777 para facilitar a instalação.
+Recomenda-se ajustar para permissões mais restritas em produção.
+O Firebird aceitará conexões de qualquer IP (interno ou externo). Configure o firewall e a rede do cliente conforme necessário.
+
+------------------------------------------
+SUPORTE
+------------------------------------------
+Em caso de dúvidas, abra um issue no repositório:
+https://github.com/Doellinger123/hqbird-firebird-installer/issues
